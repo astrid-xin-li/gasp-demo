@@ -1,0 +1,360 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "返回主 demo" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img [ref=e6]
+      - text: 返回主 demo
+    - link "跳到覆盖滚动" [ref=e8] [cursor=pointer]:
+      - /url: "#buffer-stage"
+      - img [ref=e9]
+      - text: 跳到覆盖滚动
+    - link "跳到平铺滚动" [ref=e11] [cursor=pointer]:
+      - /url: "#flow-stage"
+      - img [ref=e12]
+      - text: 跳到平铺滚动
+    - link "跳到不规则高度" [ref=e14] [cursor=pointer]:
+      - /url: "#irregular-stage"
+      - img [ref=e15]
+      - text: 跳到不规则高度
+  - main [ref=e17]:
+    - generic [ref=e18]:
+      - generic [ref=e19]: Sub page / Overlay + flow + irregular
+      - heading "6 层内容，三种滚动节奏。" [level=1] [ref=e20]
+      - paragraph [ref=e21]:
+        - text: 这个子页面现在有三种版本：上半段是
+        - strong [ref=e22]: 覆盖式 buffer scroll
+        - text: ，中间是
+        - strong [ref=e23]: 平铺滚动版
+        - text: ，下面新增了一套
+        - strong [ref=e24]: 不规则高度覆盖版
+        - text: 。 同样是数字、中文、英文、Emoji、致谢、版本六层内容，但视觉节奏会明显不同。
+    - generic [ref=e27]:
+      - complementary [ref=e28]:
+        - generic [ref=e29]: Demo A / Layer cover
+        - heading "先停顿，再覆盖。" [level=2] [ref=e30]
+        - paragraph [ref=e31]:
+          - text: 左边这块说明固定，右边是 6 层舞台。每一层都会经历两个阶段：
+          - strong [ref=e32]: 先 hold
+          - text: ，再
+          - strong [ref=e33]: cover
+          - text: 。这样滚动不会太急，内容也更容易被读完。
+        - generic [ref=e34]:
+          - generic [ref=e35]:
+            - img [ref=e36]
+            - text: Buffer hold
+          - generic [ref=e38]:
+            - img [ref=e39]
+            - text: 6 overlay layers
+        - list [ref=e43]:
+          - listitem [ref=e44]: 数字
+          - listitem [ref=e45]: 中文
+          - listitem [ref=e46]: 英文
+          - listitem [ref=e47]: Emoji
+          - listitem [ref=e48]: 致谢
+          - listitem [ref=e49]: 版本
+      - generic "Six layered buffered scroll panels" [ref=e50]:
+        - article [ref=e51]:
+          - generic [ref=e52]:
+            - generic [ref=e53]:
+              - generic [ref=e54]: Numbers first
+              - generic [ref=e55]: "01"
+            - generic [ref=e56]:
+              - generic [ref=e57]:
+                - generic [ref=e58]: "08"
+                - generic [ref=e59]: "21"
+                - generic [ref=e60]: "144"
+                - generic [ref=e61]: "2048"
+              - heading "08 · 21 · 144 · 2048" [level=3] [ref=e62]
+              - paragraph [ref=e63]: 先用数字建立节奏感：从离散的数据开始，让用户感受到“这一页正在进入下一层状态”。
+            - generic [ref=e64]: "Buffer hold: 数字停住 1 个段落，再让下一层上来。"
+        - article [ref=e65]:
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - generic [ref=e68]: Chinese layer
+              - generic [ref=e69]: "02"
+            - generic [ref=e70]:
+              - generic [ref=e71]:
+                - strong [ref=e72]: 先停顿
+                - strong [ref=e73]: 再覆盖
+                - strong [ref=e74]: 最后上提
+              - heading "先停顿一下，再让下一层缓缓盖上来。" [level=3] [ref=e75]
+              - paragraph [ref=e76]: 第二层用中文讲清楚规则：当前层不是立刻切走，而是先留出一个 buffer，让内容有被读到的时间。
+            - generic [ref=e77]: "Buffer hold: 中文层停住后，再开始覆盖切换。"
+        - article [ref=e78]:
+          - generic [ref=e79]:
+            - generic [ref=e80]:
+              - generic [ref=e81]: English layer
+              - generic [ref=e82]: "03"
+            - generic [ref=e83]:
+              - generic [ref=e84]:
+                - strong [ref=e85]: HOLD
+                - strong [ref=e86]: COVER
+                - strong [ref=e87]: REVEAL
+              - heading "WAIT. HOLD. THEN COVER." [level=3] [ref=e88]
+              - paragraph [ref=e89]: English copy works well for a more editorial or portfolio-like moment. The layer stays still first, then the next sheet rises from the bottom.
+            - generic [ref=e90]: "Buffer hold: pause before the next reveal feels intentional."
+        - article [ref=e91]:
+          - generic [ref=e92]:
+            - generic [ref=e93]:
+              - generic [ref=e94]: Emoji layer
+              - generic [ref=e95]: "04"
+            - generic [ref=e96]:
+              - generic [ref=e97]:
+                - generic [ref=e98]: 🙂
+                - generic [ref=e99]: ✨
+                - generic [ref=e100]: 🫧
+                - generic [ref=e101]: 🚀
+                - generic [ref=e102]: 🌈
+                - generic [ref=e103]: 💿
+              - heading "🙂 ✨ 🫧 🚀 🌈 💿" [level=3] [ref=e104]
+              - paragraph [ref=e105]: 这一层故意做得轻一点：emoji 不承担复杂信息，只负责把氛围和情绪拉起来，像是一个短暂的呼吸段落。
+            - generic [ref=e106]: "Buffer hold: 情绪层也应该有停留，而不是一闪而过。"
+        - article [ref=e107]:
+          - generic [ref=e108]:
+            - generic [ref=e109]:
+              - generic [ref=e110]: Thanks layer
+              - generic [ref=e111]: "05"
+            - generic [ref=e112]:
+              - generic [ref=e113]:
+                - generic [ref=e114]: THANK YOU
+                - generic [ref=e115]: for scrolling with patience
+              - heading "谢谢你一路滚到这里。" [level=3] [ref=e116]
+              - paragraph [ref=e117]: 第五层把语气收回来，用一段简短的致谢把前面的节奏沉淀一下，让最后一层版本信息出现前有一个情绪落点。
+            - generic [ref=e118]: "Buffer hold: 致谢层像一个柔和的收束。"
+        - article [ref=e119]:
+          - generic [ref=e120]:
+            - generic [ref=e121]:
+              - generic [ref=e122]: Version layer
+              - generic [ref=e123]: "06"
+            - generic [ref=e124]:
+              - generic [ref=e125]:
+                - generic [ref=e126]: release
+                - strong [ref=e127]: "0.6"
+                - generic [ref=e128]: buffer / cover / scroll
+              - heading "v0.6 — Buffer Cover Scroll" [level=3] [ref=e129]
+              - paragraph [ref=e130]: 最后一层放版本号和说明，像一个正式的收尾页：告诉人这不是普通切屏，而是一种“停顿后再覆盖”的滚动叙事节奏。
+            - generic [ref=e131]: "Final layer: 停在这里，完成整段滚动体验。"
+    - generic [ref=e133]:
+      - complementary [ref=e134]:
+        - generic [ref=e135]: Demo B / Tiled flow
+        - heading "继续下滚，平铺展开。" [level=2] [ref=e136]
+        - paragraph [ref=e137]: 这一版不再让下一层去覆盖上一层，而是把六张内容卡直接铺开在文档流里。 每张卡保持独立阅读节奏，滚动时做轻微上浮、入场和视觉偏移，更适合作品集或内容流式排版。
+        - generic [ref=e138]:
+          - generic [ref=e139]:
+            - img [ref=e140]
+            - text: Tiled narrative
+          - generic [ref=e142]:
+            - img [ref=e143]
+            - text: Same 6 layers
+        - list [ref=e147]:
+          - listitem [ref=e148]: 更像连续阅读
+          - listitem [ref=e149]: 每张卡独立展示
+          - listitem [ref=e150]: 适合长页作品集
+      - generic "Six tiled scroll panels" [ref=e151]:
+        - article [ref=e152]:
+          - generic [ref=e153]:
+            - generic [ref=e154]: Numbers first
+            - generic [ref=e155]: "01"
+          - generic [ref=e156]:
+            - generic [ref=e158]:
+              - generic [ref=e159]: "08"
+              - generic [ref=e160]: "21"
+              - generic [ref=e161]: "144"
+              - generic [ref=e162]: "2048"
+            - generic [ref=e163]:
+              - generic [ref=e164]: Flat flow presentation
+              - heading "08 · 21 · 144 · 2048" [level=3] [ref=e165]
+              - paragraph [ref=e166]: 先用数字建立节奏感：从离散的数据开始，让用户感受到“这一页正在进入下一层状态”。
+          - generic [ref=e167]:
+            - generic [ref=e168]: "Buffer hold: 数字停住 1 个段落，再让下一层上来。"
+            - generic [ref=e169]: Flow view / 01
+        - article [ref=e170]:
+          - generic [ref=e171]:
+            - generic [ref=e172]: Chinese layer
+            - generic [ref=e173]: "02"
+          - generic [ref=e174]:
+            - generic [ref=e176]:
+              - strong [ref=e177]: 先停顿
+              - strong [ref=e178]: 再覆盖
+              - strong [ref=e179]: 最后上提
+            - generic [ref=e180]:
+              - generic [ref=e181]: Flat flow presentation
+              - heading "先停顿一下，再让下一层缓缓盖上来。" [level=3] [ref=e182]
+              - paragraph [ref=e183]: 第二层用中文讲清楚规则：当前层不是立刻切走，而是先留出一个 buffer，让内容有被读到的时间。
+          - generic [ref=e184]:
+            - generic [ref=e185]: "Buffer hold: 中文层停住后，再开始覆盖切换。"
+            - generic [ref=e186]: Flow view / 02
+        - article [ref=e187]:
+          - generic [ref=e188]:
+            - generic [ref=e189]: English layer
+            - generic [ref=e190]: "03"
+          - generic [ref=e191]:
+            - generic [ref=e193]:
+              - strong [ref=e194]: HOLD
+              - strong [ref=e195]: COVER
+              - strong [ref=e196]: REVEAL
+            - generic [ref=e197]:
+              - generic [ref=e198]: Flat flow presentation
+              - heading "WAIT. HOLD. THEN COVER." [level=3] [ref=e199]
+              - paragraph [ref=e200]: English copy works well for a more editorial or portfolio-like moment. The layer stays still first, then the next sheet rises from the bottom.
+          - generic [ref=e201]:
+            - generic [ref=e202]: "Buffer hold: pause before the next reveal feels intentional."
+            - generic [ref=e203]: Flow view / 03
+        - article [ref=e204]:
+          - generic [ref=e205]:
+            - generic [ref=e206]: Emoji layer
+            - generic [ref=e207]: "04"
+          - generic [ref=e208]:
+            - generic [ref=e210]:
+              - generic [ref=e211]: 🙂
+              - generic [ref=e212]: ✨
+              - generic [ref=e213]: 🫧
+              - generic [ref=e214]: 🚀
+              - generic [ref=e215]: 🌈
+              - generic [ref=e216]: 💿
+            - generic [ref=e217]:
+              - generic [ref=e218]: Flat flow presentation
+              - heading "🙂 ✨ 🫧 🚀 🌈 💿" [level=3] [ref=e219]
+              - paragraph [ref=e220]: 这一层故意做得轻一点：emoji 不承担复杂信息，只负责把氛围和情绪拉起来，像是一个短暂的呼吸段落。
+          - generic [ref=e221]:
+            - generic [ref=e222]: "Buffer hold: 情绪层也应该有停留，而不是一闪而过。"
+            - generic [ref=e223]: Flow view / 04
+        - article [ref=e224]:
+          - generic [ref=e225]:
+            - generic [ref=e226]: Thanks layer
+            - generic [ref=e227]: "05"
+          - generic [ref=e228]:
+            - generic [ref=e230]:
+              - generic [ref=e231]: THANK YOU
+              - generic [ref=e232]: for scrolling with patience
+            - generic [ref=e233]:
+              - generic [ref=e234]: Flat flow presentation
+              - heading "谢谢你一路滚到这里。" [level=3] [ref=e235]
+              - paragraph [ref=e236]: 第五层把语气收回来，用一段简短的致谢把前面的节奏沉淀一下，让最后一层版本信息出现前有一个情绪落点。
+          - generic [ref=e237]:
+            - generic [ref=e238]: "Buffer hold: 致谢层像一个柔和的收束。"
+            - generic [ref=e239]: Flow view / 05
+        - article [ref=e240]:
+          - generic [ref=e241]:
+            - generic [ref=e242]: Version layer
+            - generic [ref=e243]: "06"
+          - generic [ref=e244]:
+            - generic [ref=e246]:
+              - generic [ref=e247]: release
+              - strong [ref=e248]: "0.6"
+              - generic [ref=e249]: buffer / cover / scroll
+            - generic [ref=e250]:
+              - generic [ref=e251]: Flat flow presentation
+              - heading "v0.6 — Buffer Cover Scroll" [level=3] [ref=e252]
+              - paragraph [ref=e253]: 最后一层放版本号和说明，像一个正式的收尾页：告诉人这不是普通切屏，而是一种“停顿后再覆盖”的滚动叙事节奏。
+          - generic [ref=e254]:
+            - generic [ref=e255]: "Final layer: 停在这里，完成整段滚动体验。"
+            - generic [ref=e256]: Flow view / 06
+    - generic [ref=e259]:
+      - complementary [ref=e260]:
+        - generic [ref=e261]: Demo C / Irregular height cover
+        - heading "高度不一，也能覆盖。" [level=2] [ref=e262]
+        - paragraph [ref=e263]: 这一版保留“先停顿、再覆盖”的节奏，但把六层内容做成了不同高度、不同宽度、不同停靠位置的片层。 这样滚动会更像杂志编排或作品精选页，而不是六张完全一样高的标准卡片。
+        - generic [ref=e264]:
+          - generic [ref=e265]:
+            - img [ref=e266]
+            - text: Variable height
+          - generic [ref=e268]:
+            - img [ref=e269]
+            - text: Irregular sheets
+        - list [ref=e273]:
+          - listitem [ref=e274]: 高度不一致
+          - listitem [ref=e275]: 宽度也有变化
+          - listitem [ref=e276]: 仍然是 buffer 后覆盖
+      - generic "Six irregular height cover panels" [ref=e277]:
+        - article [ref=e278]:
+          - generic [ref=e279]:
+            - generic [ref=e280]:
+              - generic [ref=e281]: Numbers first
+              - generic [ref=e282]: "01"
+            - generic [ref=e283]:
+              - generic [ref=e285]:
+                - generic [ref=e286]: "08"
+                - generic [ref=e287]: "21"
+                - generic [ref=e288]: "144"
+                - generic [ref=e289]: "2048"
+              - generic [ref=e290]:
+                - heading "08 · 21 · 144 · 2048" [level=3] [ref=e291]
+                - paragraph [ref=e292]: 先用数字建立节奏感：从离散的数据开始，让用户感受到“这一页正在进入下一层状态”。
+            - generic [ref=e293]: "Buffer hold: 数字停住 1 个段落，再让下一层上来。"
+        - article [ref=e294]:
+          - generic [ref=e295]:
+            - generic [ref=e296]:
+              - generic [ref=e297]: Chinese layer
+              - generic [ref=e298]: "02"
+            - generic [ref=e299]:
+              - generic [ref=e301]:
+                - strong [ref=e302]: 先停顿
+                - strong [ref=e303]: 再覆盖
+                - strong [ref=e304]: 最后上提
+              - generic [ref=e305]:
+                - heading "先停顿一下，再让下一层缓缓盖上来。" [level=3] [ref=e306]
+                - paragraph [ref=e307]: 第二层用中文讲清楚规则：当前层不是立刻切走，而是先留出一个 buffer，让内容有被读到的时间。
+            - generic [ref=e308]: "Buffer hold: 中文层停住后，再开始覆盖切换。"
+        - article [ref=e309]:
+          - generic [ref=e310]:
+            - generic [ref=e311]:
+              - generic [ref=e312]: English layer
+              - generic [ref=e313]: "03"
+            - generic [ref=e314]:
+              - generic [ref=e316]:
+                - strong [ref=e317]: HOLD
+                - strong [ref=e318]: COVER
+                - strong [ref=e319]: REVEAL
+              - generic [ref=e320]:
+                - heading "WAIT. HOLD. THEN COVER." [level=3] [ref=e321]
+                - paragraph [ref=e322]: English copy works well for a more editorial or portfolio-like moment. The layer stays still first, then the next sheet rises from the bottom.
+            - generic [ref=e323]: "Buffer hold: pause before the next reveal feels intentional."
+        - article [ref=e324]:
+          - generic [ref=e325]:
+            - generic [ref=e326]:
+              - generic [ref=e327]: Emoji layer
+              - generic [ref=e328]: "04"
+            - generic [ref=e329]:
+              - generic [ref=e331]:
+                - generic [ref=e332]: 🙂
+                - generic [ref=e333]: ✨
+                - generic [ref=e334]: 🫧
+                - generic [ref=e335]: 🚀
+                - generic [ref=e336]: 🌈
+                - generic [ref=e337]: 💿
+              - generic [ref=e338]:
+                - heading "🙂 ✨ 🫧 🚀 🌈 💿" [level=3] [ref=e339]
+                - paragraph [ref=e340]: 这一层故意做得轻一点：emoji 不承担复杂信息，只负责把氛围和情绪拉起来，像是一个短暂的呼吸段落。
+            - generic [ref=e341]: "Buffer hold: 情绪层也应该有停留，而不是一闪而过。"
+        - article [ref=e342]:
+          - generic [ref=e343]:
+            - generic [ref=e344]:
+              - generic [ref=e345]: Thanks layer
+              - generic [ref=e346]: "05"
+            - generic [ref=e347]:
+              - generic [ref=e349]:
+                - generic [ref=e350]: THANK YOU
+                - generic [ref=e351]: for scrolling with patience
+              - generic [ref=e352]:
+                - heading "谢谢你一路滚到这里。" [level=3] [ref=e353]
+                - paragraph [ref=e354]: 第五层把语气收回来，用一段简短的致谢把前面的节奏沉淀一下，让最后一层版本信息出现前有一个情绪落点。
+            - generic [ref=e355]: "Buffer hold: 致谢层像一个柔和的收束。"
+        - article [ref=e356]:
+          - generic [ref=e357]:
+            - generic [ref=e358]:
+              - generic [ref=e359]: Version layer
+              - generic [ref=e360]: "06"
+            - generic [ref=e361]:
+              - generic [ref=e363]:
+                - generic [ref=e364]: release
+                - strong [ref=e365]: "0.6"
+                - generic [ref=e366]: buffer / cover / scroll
+              - generic [ref=e367]:
+                - heading "v0.6 — Buffer Cover Scroll" [level=3] [ref=e368]
+                - paragraph [ref=e369]: 最后一层放版本号和说明，像一个正式的收尾页：告诉人这不是普通切屏，而是一种“停顿后再覆盖”的滚动叙事节奏。
+            - generic [ref=e370]: "Final layer: 停在这里，完成整段滚动体验。"
+    - generic [ref=e371]:
+      - generic [ref=e372]: Usage note
+      - heading "一个适合章节叙事，一个适合连续展示，一个适合更自由的版式。" [level=2] [ref=e373]
+      - paragraph [ref=e374]: 现在这个子页已经有三种同题对照：如果你想强调“切层感”和“停顿感”，就用覆盖版本；如果你想更自然地往下读，就用平铺版本；如果你想更像编辑设计或作品策展，就用不规则高度版本。 如果你愿意，我下一步可以继续把这三套都抽成可配置模板。

@@ -590,6 +590,10 @@ export default function BufferLayersPage() {
           <ArrowDown size={18} />
           跳到不规则高度
         </a>
+        <a className="buffer-topbar__link" href="/buffer-layers-irregular">
+          <Layers3 size={18} />
+          只看不规则单页
+        </a>
       </header>
 
       <main>

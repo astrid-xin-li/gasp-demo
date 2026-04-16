@@ -622,6 +622,92 @@
   }
 }
 
+.buffer-page--irregular-only {
+  padding-bottom: 0;
+}
+
+.buffer-page--irregular-only .buffer-topbar {
+  justify-content: flex-start;
+}
+
+.buffer-page--irregular-only .buffer-irregular-section {
+  width: 100%;
+  margin: 0;
+}
+
+.buffer-page--irregular-only .buffer-irregular-shell {
+  display: block;
+  min-height: calc(100vh - 72px);
+}
+
+.buffer-page--irregular-only .buffer-irregular-stage {
+  min-height: calc(100vh - 72px);
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.buffer-page--irregular-only .buffer-irregular-layer {
+  padding: 0;
+  background: var(--buffer-bg);
+}
+
+.buffer-page--irregular-only .buffer-irregular-layer::before {
+  border-radius: 0;
+}
+
+.buffer-page--irregular-only .buffer-irregular-layer__sheet {
+  width: 100%;
+  min-height: var(--irregular-height);
+  padding: 106px 40px 36px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.buffer-page--irregular-only .buffer-irregular-layer__header,
+.buffer-page--irregular-only .buffer-irregular-layer__body,
+.buffer-page--irregular-only .buffer-irregular-layer__footer {
+  width: min(100%, 1040px);
+  margin: 0 auto;
+}
+
+.buffer-page--irregular-only .buffer-irregular-layer__body {
+  gap: 28px;
+  align-content: start;
+  padding: 28px 0 40px;
+}
+
+.buffer-page--irregular-only .buffer-irregular-layer__visual-wrap {
+  padding: 0;
+}
+
+.buffer-page--irregular-only .buffer-irregular-layer__copy {
+  gap: 18px;
+}
+
+.buffer-page--irregular-only .buffer-irregular-layer h3 {
+  max-width: 11ch;
+  font-size: clamp(3rem, 7vw, 6rem);
+}
+
+.buffer-page--irregular-only .buffer-irregular-layer p,
+.buffer-page--irregular-only .buffer-irregular-layer__details li {
+  max-width: 58ch;
+  font-size: 1.02rem;
+}
+
+.buffer-page--irregular-only .buffer-irregular-layer__details {
+  display: grid;
+  gap: 10px;
+  padding-left: 20px;
+  margin: 2px 0 0;
+  color: #51627f;
+}
+
 @media (max-width: 720px) {
   .buffer-topbar,
   .buffer-hero,
@@ -629,6 +715,10 @@
   .buffer-flow-section,
   .buffer-irregular-section,
   .buffer-outro {
+    width: min(calc(100% - 24px), 1180px);
+  }
+
+  .buffer-page--irregular-only .buffer-irregular-section {
     width: min(calc(100% - 24px), 1180px);
   }
 
@@ -677,5 +767,9 @@
 
   .buffer-irregular-layer__sheet {
     min-height: auto;
+  }
+
+  .buffer-page--irregular-only .buffer-irregular-layer h3 {
+    font-size: clamp(2.3rem, 10vw, 4rem);
   }
 }

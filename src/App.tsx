@@ -636,8 +636,12 @@ function App() {
                 <MousePointer2 size={18} />
               </a>
               <a className="button button--ghost" href="/buffer-layers" data-cursor="route">
-                看 6 层 buffer 子页
+                看三种 buffer 子页
                 <ExternalLink size={18} />
+              </a>
+              <a className="button button--ghost" href="/buffer-layers-irregular" data-cursor="irregular">
+                看不规则单页
+                <Layers3 size={18} />
               </a>
             </div>
 

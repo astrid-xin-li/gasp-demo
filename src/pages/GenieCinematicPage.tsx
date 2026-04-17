@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { RotateCcw } from 'lucide-react'
 import { SplashNav } from './components/SplashNav'
+import { GenieLogo } from './components/GenieLogo'
 
 /**
  * Genie Cinematic Splash — 电影幕帘风格
@@ -163,16 +164,11 @@ export default function GenieCinematicPage() {
         {/* Logo */}
         <div ref={logoRef} style={{
           position: 'relative', zIndex: 5,
-          fontSize: 'clamp(4rem, 12vw, 8rem)',
-          fontWeight: 800,
-          fontFamily: "'Inter', -apple-system, sans-serif",
-          letterSpacing: '-0.03em',
-          color: '#f5e6d3',
-          textShadow: '0 0 60px rgba(255,200,100,0.3), 0 0 120px rgba(255,160,60,0.15)',
           overflow: 'hidden',
           transformStyle: 'preserve-3d',
+          filter: 'drop-shadow(0 0 60px rgba(255,200,100,0.3)) drop-shadow(0 0 120px rgba(255,160,60,0.15))',
         }}>
-          Genie
+          <GenieLogo variant="white" height={85} gap={6} />
 
           {/* Light sweep */}
           <div ref={shineRef} style={{

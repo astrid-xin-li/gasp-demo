@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { RotateCcw } from 'lucide-react'
 import { SplashNav } from './components/SplashNav'
+import { GenieG, GenieE1, GenieN, GenieI, GenieE2 } from './components/GenieLogo'
 
 /**
  * Genie Gravity Splash — 重力掉落 / 弹跳物理风格
@@ -101,19 +102,16 @@ export default function GenieGravityPage() {
         }} />
 
         {/* Letters */}
-        <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'flex-end', gap: 'clamp(2px, 0.5vw, 8px)' }}>
-          {letters.map((char, i) => (
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'flex-end', gap: 'clamp(4px, 1vw, 10px)' }}>
+          {[GenieG, GenieE1, GenieN, GenieI, GenieE2].map((Letter, i) => (
             <div
               key={i}
               ref={el => { lettersRef.current[i] = el }}
               style={{
-                fontSize: 'clamp(4.5rem, 14vw, 9rem)', fontWeight: 800,
-                fontFamily: "'Inter', sans-serif",
-                color: colors[i], lineHeight: 1,
                 willChange: 'transform, opacity',
                 filter: `drop-shadow(0 4px 12px ${colors[i]}40)`,
               }}
-            >{char}</div>
+            ><Letter variant="black" height={90} /></div>
           ))}
         </div>
 

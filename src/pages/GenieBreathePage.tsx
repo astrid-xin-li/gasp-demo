@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { RotateCcw } from 'lucide-react'
 import { SplashNav } from './components/SplashNav'
+import { GenieG, GenieEnie, GenieLogo } from './components/GenieLogo'
 
 /**
  * Genie Breathe Splash — 极简呼吸光环风格
@@ -165,9 +166,9 @@ export default function GenieBreathePage() {
         }} />
 
         {/* Brand: G + enie in a flex row, G will be translated to center initially */}
-        <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'baseline' }}>
-          <div ref={gRef} style={{ ...fontStyle, willChange: 'transform, opacity' }}>G</div>
-          <div ref={enieRef} style={{ ...fontStyle, willChange: 'clip-path, opacity' }}>enie</div>
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'flex-end', gap: 6 }}>
+          <div ref={gRef} style={{ willChange: 'transform, opacity' }}><GenieG variant="black" height={80} /></div>
+          <div ref={enieRef} style={{ willChange: 'clip-path, opacity' }}><GenieEnie variant="black" height={80} gap={6} /></div>
         </div>
 
         {/* Subtitle */}

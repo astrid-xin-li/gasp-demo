@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { RotateCcw } from 'lucide-react'
 import { SplashNav } from './components/SplashNav'
+import { GenieG, GenieE1, GenieN, GenieI, GenieE2 } from './components/GenieLogo'
 
 /**
  * Genie Typeface Splash — 排版动力学风格
@@ -98,20 +99,13 @@ export default function GenieTypefacePage() {
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
         background: '#f8f8f8', overflow: 'hidden',
       }}>
-        <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center' }}>
-          {letters.map((char, i) => (
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'flex-end', gap: 6 }}>
+          {[GenieG, GenieE1, GenieN, GenieI, GenieE2].map((Letter, i) => (
             <div
               key={i}
               ref={el => { lettersRef.current[i] = el }}
-              style={{
-                fontSize: 'clamp(5rem, 15vw, 10rem)',
-                fontWeight: 900,
-                fontFamily: "'Inter', 'Helvetica Neue', sans-serif",
-                color: '#0a0a0a',
-                lineHeight: 1,
-                willChange: 'transform, opacity',
-              }}
-            >{char}</div>
+              style={{ willChange: 'transform, opacity' }}
+            ><Letter variant="black" height={100} /></div>
           ))}
         </div>
         <div ref={lineRef} style={{

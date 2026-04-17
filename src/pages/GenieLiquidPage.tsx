@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { RotateCcw } from 'lucide-react'
 import { SplashNav } from './components/SplashNav'
+import { GenieLogo } from './components/GenieLogo'
 
 /**
  * Genie Liquid Splash — 流体渐变 / 液态金属风格
@@ -169,30 +170,17 @@ export default function GenieLiquidPage() {
 
         {/* Logo: outline version (shows first) */}
         <div ref={outlineRef} style={{
-          position: 'relative', zIndex: 2,
-          fontSize: 'clamp(4rem, 13vw, 8.5rem)',
-          fontWeight: 800,
-          fontFamily: "'Inter', -apple-system, sans-serif",
-          letterSpacing: '-0.02em',
-          color: 'transparent',
-          WebkitTextStroke: '1.5px rgba(255,255,255,0.3)',
-          lineHeight: 1,
+          position: 'relative', zIndex: 2, opacity: 0.3,
         }}>
-          Genie
+          <GenieLogo variant="white" height={85} gap={6} />
         </div>
 
         {/* Logo: solid version */}
         <div ref={logoRef} style={{
           position: 'absolute', zIndex: 3,
-          fontSize: 'clamp(4rem, 13vw, 8.5rem)',
-          fontWeight: 800,
-          fontFamily: "'Inter', -apple-system, sans-serif",
-          letterSpacing: '-0.02em',
-          color: '#fff',
-          lineHeight: 1,
-          textShadow: '0 0 60px rgba(255,255,255,0.15)',
+          filter: 'drop-shadow(0 0 60px rgba(255,255,255,0.15))',
         }}>
-          Genie
+          <GenieLogo variant="white" height={85} gap={6} />
         </div>
 
         {/* Underline */}

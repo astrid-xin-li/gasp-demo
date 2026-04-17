@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { RotateCcw } from 'lucide-react'
 import { SplashNav } from './components/SplashNav'
+import { GenieG, GenieEnie } from './components/GenieLogo'
 
 /**
  * Genie Morph Splash — SVG 路径变形风格
@@ -103,19 +104,13 @@ export default function GenieMorphPage() {
         <div ref={shape2Ref} style={{ ...shapeBase, background: 'linear-gradient(135deg, #60a5fa, #3b82f6)' }} />
         <div ref={shape3Ref} style={{ ...shapeBase, background: 'linear-gradient(135deg, #34d399, #10b981)' }} />
 
-        <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'baseline' }}>
-          <div ref={letterRef} style={{
-            fontSize: 'clamp(4rem, 12vw, 8rem)', fontWeight: 800,
-            fontFamily: "'Inter', sans-serif",
-            background: 'linear-gradient(135deg, #f472b6, #60a5fa, #34d399)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-          }}>G</div>
-          <div ref={restRef} style={{
-            fontSize: 'clamp(4rem, 12vw, 8rem)', fontWeight: 800,
-            fontFamily: "'Inter', sans-serif",
-            background: 'linear-gradient(135deg, #60a5fa, #34d399)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-          }}>enie</div>
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'flex-end' }}>
+          <div ref={letterRef} style={{ willChange: 'transform, opacity' }}>
+            <GenieG variant="white" height={80} />
+          </div>
+          <div ref={restRef} style={{ willChange: 'opacity', display: 'flex' }}>
+            <GenieEnie variant="white" height={80} gap={6} />
+          </div>
         </div>
 
         <div ref={subtitleRef} style={{

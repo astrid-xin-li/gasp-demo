@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { RotateCcw } from 'lucide-react'
 import { SplashNav } from './components/SplashNav'
+import { GenieG, GenieE1, GenieN, GenieI, GenieE2 } from './components/GenieLogo'
 
 /**
  * Genie Brand Splash — 品牌 Logo 入场动画
@@ -283,28 +284,21 @@ export default function GenieSplashPage() {
           gap: 2,
           perspective: '800px',
         }}>
-          {'genie'.split('').map((char, i) => (
-            <span
-              key={i}
-              className="splash-letter"
-              style={{
-                display: 'inline-block',
-                fontSize: 'clamp(4rem, 12vw, 8rem)',
-                fontWeight: 800,
-                fontFamily: "'Inter', 'SF Pro Display', -apple-system, sans-serif",
-                letterSpacing: '-0.02em',
-                background: 'linear-gradient(135deg, #e0e7ff 0%, #a5b4fc 30%, #818cf8 60%, #6366f1 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                textShadow: 'none',
-                filter: 'drop-shadow(0 0 30px rgba(99,102,241,0.3))',
-                willChange: 'transform, opacity',
-                textTransform: i === 0 ? 'uppercase' : 'lowercase',
-              }}
-            >
-              {i === 0 ? char.toUpperCase() : char}
-            </span>
-          ))}
+          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: 'drop-shadow(0 0 30px rgba(99,102,241,0.3))' }}>
+            <GenieG variant="white" height={90} />
+          </div>
+          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: 'drop-shadow(0 0 30px rgba(99,102,241,0.3))' }}>
+            <GenieE1 variant="white" height={90} />
+          </div>
+          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: 'drop-shadow(0 0 30px rgba(99,102,241,0.3))' }}>
+            <GenieN variant="white" height={90} />
+          </div>
+          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: 'drop-shadow(0 0 30px rgba(99,102,241,0.3))' }}>
+            <GenieI variant="white" height={90} />
+          </div>
+          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: 'drop-shadow(0 0 30px rgba(99,102,241,0.3))' }}>
+            <GenieE2 variant="white" height={90} />
+          </div>
         </div>
 
         {/* Tagline */}

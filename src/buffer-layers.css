@@ -640,12 +640,20 @@
   min-height: calc(100vh - 72px);
 }
 
+.buffer-page--irregular-only.buffer-page--no-topbar .buffer-irregular-shell {
+  min-height: 100vh;
+}
+
 .buffer-page--irregular-only .buffer-irregular-stage {
   min-height: calc(100vh - 72px);
   border: none;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+}
+
+.buffer-page--irregular-only.buffer-page--no-topbar .buffer-irregular-stage {
+  min-height: 100vh;
 }
 
 .buffer-page--irregular-only .buffer-irregular-layer {

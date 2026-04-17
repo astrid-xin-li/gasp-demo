@@ -606,6 +606,9 @@ function App() {
           <a href="/buffer-layers" data-cursor="subpage">
             Buffer page
           </a>
+          <a href="/genie-splash" data-cursor="splash">
+            Genie Splash
+          </a>
           <a href="#notes" data-cursor="notes">
             Notes
           </a>
@@ -642,6 +645,10 @@ function App() {
               <a className="button button--ghost" href="/buffer-layers-irregular" data-cursor="irregular">
                 看不规则单页
                 <Layers3 size={18} />
+              </a>
+              <a className="button button--ghost" href="/genie-splash" data-cursor="splash">
+                Genie 品牌入场动画
+                <Sparkles size={18} />
               </a>
             </div>
 

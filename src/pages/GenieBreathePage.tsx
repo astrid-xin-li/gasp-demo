@@ -1,8 +1,10 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { RotateCcw } from 'lucide-react'
 import { SplashNav } from './components/SplashNav'
 import { GenieG, GenieEnie, GenieLogo } from './components/GenieLogo'
+import { ThemeToggle } from './components/ThemeToggle'
+import { getInitialDark, persistTheme } from './utils/theme-cookie'
 
 /**
  * Genie Breathe Splash — 极简呼吸光环风格
@@ -22,6 +24,44 @@ export default function GenieBreathePage() {
   const tlRef = useRef<gsap.core.Timeline | null>(null)
 
   const [showReplay, setShowReplay] = useState(false)
+  const [isDark, setIsDark] = useState(getInitialDark)
+  const toggleDark = useCallback(() => {
+    setIsDark(prev => { const next = !prev; persistTheme(next); return next })
+  }, [])
+
+  const t = isDark ? {
+    splashBg: '#111113',
+    contentBg: '#111113',
+    subtitleColor: 'rgba(255,255,255,0.35)',
+    titleColor: '#f0f0f0',
+    descColor: 'rgba(255,255,255,0.4)',
+    tagBorder: 'rgba(255,255,255,0.1)',
+    tagBg: 'rgba(255,255,255,0.04)',
+    tagColor: 'rgba(255,255,255,0.5)',
+    replayColor: 'rgba(255,255,255,0.25)',
+    logoVariant: 'white' as const,
+    navTheme: 'dark' as const,
+    glowGradient: 'radial-gradient(circle, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 50%, transparent 70%)',
+    ringBorder: '1.5px solid rgba(255,255,255,0.15)',
+    ringShadow: '0 0 30px rgba(255,255,255,0.04)',
+    ring2Border: '1px solid rgba(255,255,255,0.08)',
+  } : {
+    splashBg: '#f5f5f7',
+    contentBg: '#f5f5f7',
+    subtitleColor: 'rgba(0,0,0,0.35)',
+    titleColor: '#1d1d1f',
+    descColor: 'rgba(0,0,0,0.4)',
+    tagBorder: 'rgba(0,0,0,0.08)',
+    tagBg: 'rgba(0,0,0,0.02)',
+    tagColor: 'rgba(0,0,0,0.45)',
+    replayColor: 'rgba(0,0,0,0.25)',
+    logoVariant: 'black' as const,
+    navTheme: 'light' as const,
+    glowGradient: 'radial-gradient(circle, rgba(0,0,0,0.07) 0%, rgba(0,0,0,0.02) 50%, transparent 70%)',
+    ringBorder: '1.5px solid rgba(0,0,0,0.15)',
+    ringShadow: '0 0 30px rgba(0,0,0,0.04)',
+    ring2Border: '1px solid rgba(0,0,0,0.08)',
+  }
 
   const runAnimation = () => {
     if (tlRef.current) tlRef.current.kill()
@@ -140,8 +180,10 @@ export default function GenieBreathePage() {
       <div ref={splashRef} style={{
         position: 'fixed', inset: 0, zIndex: 100,
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        background: '#f5f5f7', overflow: 'hidden',
+        background: t.splashBg, overflow: 'hidden',
+        transition: 'background 0.4s ease',
       }}>
+        <ThemeToggle isDark={isDark} onToggle={toggleDark} style={{ zIndex: 110 }} />
         {/* Grain */}
         <div style={{
           position: 'absolute', inset: 0, opacity: 0.025,
@@ -152,31 +194,35 @@ export default function GenieBreathePage() {
         {/* Glow */}
         <div ref={glowRef} style={{
           ...ringBase, width: 300, height: 300,
-          background: 'radial-gradient(circle, rgba(0,0,0,0.07) 0%, rgba(0,0,0,0.02) 50%, transparent 70%)',
+          background: t.glowGradient,
+          transition: 'background 0.4s ease',
         }} />
         {/* Ring 1 */}
         <div ref={ring1Ref} style={{
           ...ringBase, width: 220, height: 220,
-          border: '1.5px solid rgba(0,0,0,0.15)', boxShadow: '0 0 30px rgba(0,0,0,0.04)',
+          border: t.ringBorder, boxShadow: t.ringShadow,
+          transition: 'border 0.4s ease, box-shadow 0.4s ease',
         }} />
         {/* Ring 2 */}
         <div ref={ring2Ref} style={{
           ...ringBase, width: 360, height: 360,
-          border: '1px solid rgba(0,0,0,0.08)',
+          border: t.ring2Border,
+          transition: 'border 0.4s ease',
         }} />
 
         {/* Brand: G + enie in a flex row, G will be translated to center initially */}
         <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'flex-end', gap: 6 }}>
-          <div ref={gRef} style={{ willChange: 'transform, opacity' }}><GenieG variant="black" height={80} /></div>
-          <div ref={enieRef} style={{ willChange: 'clip-path, opacity' }}><GenieEnie variant="black" height={80} gap={6} /></div>
+          <div ref={gRef} style={{ willChange: 'transform, opacity' }}><GenieG variant={t.logoVariant} height={80} /></div>
+          <div ref={enieRef} style={{ willChange: 'clip-path, opacity' }}><GenieEnie variant={t.logoVariant} height={80} gap={6} /></div>
         </div>
 
         {/* Subtitle */}
         <div ref={subtitleRef} style={{
           position: 'relative', zIndex: 2, marginTop: 16,
           fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)', letterSpacing: '0.25em',
-          color: 'rgba(0,0,0,0.35)', textTransform: 'uppercase',
+          color: t.subtitleColor, textTransform: 'uppercase',
           fontFamily: "'Inter', -apple-system, sans-serif", fontWeight: 300,
+          transition: 'color 0.4s ease',
         }}>
           Simplicity is the ultimate sophistication
         </div>
@@ -185,25 +231,27 @@ export default function GenieBreathePage() {
       {/* Content */}
       <div ref={contentRef} style={{
         minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        background: '#f5f5f7', padding: '60px 24px', gap: 40,
+        background: t.contentBg, padding: '60px 24px', gap: 40,
+        transition: 'background 0.4s ease',
       }}>
-        <SplashNav theme="light" onReplay={runAnimation} />
+        <SplashNav theme={t.navTheme} onReplay={runAnimation} />
+        <ThemeToggle isDark={isDark} onToggle={toggleDark} style={{ position: 'fixed', zIndex: 110 }} />
         <div style={{ maxWidth: 720, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
-          <div style={{ fontSize: 'clamp(3rem, 8vw, 5rem)', fontWeight: 300, fontFamily: "'Inter', sans-serif", color: '#1d1d1f', letterSpacing: '-0.03em' }}>
+          <div style={{ fontSize: 'clamp(3rem, 8vw, 5rem)', fontWeight: 300, fontFamily: "'Inter', sans-serif", color: t.titleColor, letterSpacing: '-0.03em', transition: 'color 0.4s ease' }}>
             Breathe Splash
           </div>
-          <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: 'rgba(0,0,0,0.4)', lineHeight: 1.7, maxWidth: 540 }}>
+          <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: t.descColor, lineHeight: 1.7, maxWidth: 540, transition: 'color 0.4s ease' }}>
             极简呼吸光环风格。字母 G 在屏幕正中心出现并跟随光环同步呼吸缩放，
             光环散去后 G 平滑滑到左侧，"enie" 从右侧展开，组成完整品牌名。
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center' }}>
             {['Breathe Ring', 'G → Genie', 'Minimalist', 'Light Theme', 'Apple-like'].map(tag => (
-              <span key={tag} style={{ padding: '6px 14px', borderRadius: 20, border: '1px solid rgba(0,0,0,0.08)', background: 'rgba(0,0,0,0.02)', color: 'rgba(0,0,0,0.45)', fontSize: 12, fontWeight: 500 }}>{tag}</span>
+              <span key={tag} style={{ padding: '6px 14px', borderRadius: 20, border: `1px solid ${t.tagBorder}`, background: t.tagBg, color: t.tagColor, fontSize: 12, fontWeight: 500, transition: 'all 0.4s ease' }}>{tag}</span>
             ))}
           </div>
         </div>
         {showReplay && (
-          <div style={{ marginTop: 20, fontSize: 13, color: 'rgba(0,0,0,0.25)', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ marginTop: 20, fontSize: 13, color: t.replayColor, display: 'flex', alignItems: 'center', gap: 6, transition: 'color 0.4s ease' }}>
             <RotateCcw size={13} /> 点击右上角重新播放
           </div>
         )}

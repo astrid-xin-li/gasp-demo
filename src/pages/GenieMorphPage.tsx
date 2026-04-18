@@ -1,8 +1,38 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState, useCallback } from 'react'
 import { gsap } from 'gsap'
 import { RotateCcw } from 'lucide-react'
 import { SplashNav } from './components/SplashNav'
 import { GenieG, GenieEnie } from './components/GenieLogo'
+import { ThemeToggle } from './components/ThemeToggle'
+import { getInitialDark, persistTheme } from './utils/theme-cookie'
+
+const darkTokens = {
+  splashBg: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+  contentBg: 'linear-gradient(180deg, #0f172a, #1e293b 50%, #0f172a)',
+  subtitleColor: 'rgba(255,255,255,0.35)',
+  titleGrad: 'linear-gradient(135deg, #f472b6, #60a5fa, #34d399)',
+  descColor: 'rgba(255,255,255,0.35)',
+  tagBorder: '1px solid rgba(244,114,182,0.2)',
+  tagBg: 'rgba(244,114,182,0.06)',
+  tagColor: 'rgba(244,114,182,0.6)',
+  replayColor: 'rgba(255,255,255,0.2)',
+  logoVariant: 'white' as const,
+  navTheme: 'dark' as const,
+}
+
+const lightTokens: typeof darkTokens = {
+  splashBg: 'linear-gradient(135deg, #f8f0f5 0%, #f0f5fb 100%)',
+  contentBg: 'linear-gradient(180deg, #f8f0f5, #f0f5fb 50%, #f8f0f5)',
+  subtitleColor: 'rgba(0,0,0,0.35)',
+  titleGrad: 'linear-gradient(135deg, #f472b6, #60a5fa, #34d399)',
+  descColor: 'rgba(0,0,0,0.4)',
+  tagBorder: '1px solid rgba(244,114,182,0.25)',
+  tagBg: 'rgba(244,114,182,0.08)',
+  tagColor: 'rgba(244,114,182,0.7)',
+  replayColor: 'rgba(0,0,0,0.25)',
+  logoVariant: 'black' as const,
+  navTheme: 'light' as const,
+}
 
 /**
  * Genie Morph Splash — SVG 路径变形风格
@@ -22,6 +52,10 @@ export default function GenieMorphPage() {
   const contentRef = useRef<HTMLDivElement>(null)
   const tlRef = useRef<gsap.core.Timeline | null>(null)
   const [showReplay, setShowReplay] = useState(false)
+  const [isDark, setIsDark] = useState(getInitialDark)
+  const toggleDark = useCallback(() => {
+    setIsDark(prev => { const next = !prev; persistTheme(next); return next })
+  }, [])
 
   const runAnimation = () => {
     if (tlRef.current) tlRef.current.kill()
@@ -93,53 +127,58 @@ export default function GenieMorphPage() {
     willChange: 'transform, opacity, border-radius',
   }
 
+  const t = isDark ? darkTokens : lightTokens
+
   return (
     <div ref={rootRef} style={{ position: 'relative', width: '100%', minHeight: '100vh', overflow: 'hidden' }}>
       <div ref={splashRef} style={{
         position: 'fixed', inset: 0, zIndex: 100,
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', overflow: 'hidden',
+        background: t.splashBg, overflow: 'hidden',
+        transition: 'background 0.4s ease',
       }}>
+        <ThemeToggle isDark={isDark} onToggle={toggleDark} />
         <div ref={shape1Ref} style={{ ...shapeBase, background: 'linear-gradient(135deg, #f472b6, #ec4899)' }} />
         <div ref={shape2Ref} style={{ ...shapeBase, background: 'linear-gradient(135deg, #60a5fa, #3b82f6)' }} />
         <div ref={shape3Ref} style={{ ...shapeBase, background: 'linear-gradient(135deg, #34d399, #10b981)' }} />
 
         <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'flex-end' }}>
           <div ref={letterRef} style={{ willChange: 'transform, opacity' }}>
-            <GenieG variant="white" height={80} />
+            <GenieG variant={t.logoVariant} height={80} />
           </div>
           <div ref={restRef} style={{ willChange: 'opacity', display: 'flex' }}>
-            <GenieEnie variant="white" height={80} gap={6} />
+            <GenieEnie variant={t.logoVariant} height={80} gap={6} />
           </div>
         </div>
 
         <div ref={subtitleRef} style={{
           position: 'relative', zIndex: 2, marginTop: 20,
           fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)', letterSpacing: '0.35em',
-          color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase',
+          color: t.subtitleColor, textTransform: 'uppercase',
         }}>Shape-Shifting Intelligence</div>
       </div>
 
       <div ref={contentRef} style={{
         minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        background: 'linear-gradient(180deg, #0f172a, #1e293b 50%, #0f172a)', padding: '60px 24px', gap: 40,
+        background: t.contentBg, padding: '60px 24px', gap: 40,
+        transition: 'background 0.4s ease',
       }}>
-        <SplashNav theme="dark" onReplay={runAnimation} />
+        <SplashNav theme={t.navTheme} onReplay={runAnimation} />
         <div style={{ maxWidth: 720, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
-          <div style={{ fontSize: 'clamp(3rem, 8vw, 5rem)', fontWeight: 800, background: 'linear-gradient(135deg, #f472b6, #60a5fa, #34d399)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          <div style={{ fontSize: 'clamp(3rem, 8vw, 5rem)', fontWeight: 800, background: t.titleGrad, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Morph Splash
           </div>
-          <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: 'rgba(255,255,255,0.35)', lineHeight: 1.7, maxWidth: 540 }}>
+          <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: t.descColor, lineHeight: 1.7, maxWidth: 540 }}>
             图形变形风格入场。三个彩色形状不断变换圆角、旋转角度和位置，经过圆→方→异形→收束的过程后融合消失，品牌名从首字母 G 开始逐步展开。
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center' }}>
             {['Shape Morph', 'Border-radius', 'Converge', 'Color Gradient', 'Playful'].map(tag => (
-              <span key={tag} style={{ padding: '6px 14px', borderRadius: 20, border: '1px solid rgba(244,114,182,0.2)', background: 'rgba(244,114,182,0.06)', color: 'rgba(244,114,182,0.6)', fontSize: 12, fontWeight: 500 }}>{tag}</span>
+              <span key={tag} style={{ padding: '6px 14px', borderRadius: 20, border: t.tagBorder, background: t.tagBg, color: t.tagColor, fontSize: 12, fontWeight: 500 }}>{tag}</span>
             ))}
           </div>
         </div>
         {showReplay && (
-          <div style={{ marginTop: 20, fontSize: 13, color: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ marginTop: 20, fontSize: 13, color: t.replayColor, display: 'flex', alignItems: 'center', gap: 6 }}>
             <RotateCcw size={13} /> 点击右上角重新播放
           </div>
         )}

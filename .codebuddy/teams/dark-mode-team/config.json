@@ -1,0 +1,33 @@
+{
+  "name": "dark-mode-team",
+  "leadAgentId": "dcaa765aa1784beba0eadb30381e36e9",
+  "workspacePath": "/Users/astridli/Desktop/workspace/testing/gsap-demo",
+  "createdAt": "2026-04-18T09:23:44.342Z",
+  "options": {
+    "workspacePath": "/Users/astridli/Desktop/workspace/testing/gsap-demo",
+    "isAutoTeam": false
+  },
+  "members": [
+    {
+      "memberId": "team-lead@dark-mode-team",
+      "name": "team-lead",
+      "role": "Team Lead - coordinates the team and interacts with the user"
+    },
+    {
+      "memberId": "dark-pages@dark-mode-team",
+      "name": "dark-pages",
+      "role": "Dark mode: dark-theme pages (4 files)"
+    },
+    {
+      "memberId": "light-pages@dark-mode-team",
+      "name": "light-pages",
+      "role": "Dark mode: light-theme pages (2 files)"
+    },
+    {
+      "memberId": "special-pages@dark-mode-team",
+      "name": "special-pages",
+      "role": "Dark mode: special-theme pages (5 files)"
+    }
+  ],
+  "isAutoTeam": false
+}

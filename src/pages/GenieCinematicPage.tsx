@@ -1,8 +1,10 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState, useCallback } from 'react'
 import { gsap } from 'gsap'
 import { RotateCcw } from 'lucide-react'
 import { SplashNav } from './components/SplashNav'
 import { GenieLogo } from './components/GenieLogo'
+import { ThemeToggle } from './components/ThemeToggle'
+import { getInitialDark, persistTheme } from './utils/theme-cookie'
 
 /**
  * Genie Cinematic Splash — 电影幕帘风格
@@ -10,6 +12,38 @@ import { GenieLogo } from './components/GenieLogo'
  * 灵感：Netflix / Disney+ 开屏
  * 编排：幕帘从中间拉开 → 品牌字体从景深推入 → 光线扫过 → 背景渐变转场
  */
+
+const themeTokens = {
+  light: {
+    splashBg: '#fffcf5',
+    contentBg: 'linear-gradient(180deg, #fffcf5, #fff5e6 50%, #fffcf5)',
+    subtitleColor: 'rgba(146,64,14,0.4)',
+    titleColor: '#92400e',
+    titleShadow: '0 0 40px rgba(146,64,14,0.1)',
+    descColor: 'rgba(146,64,14,0.5)',
+    tagBorder: 'rgba(146,64,14,0.15)',
+    tagBg: 'rgba(146,64,14,0.05)',
+    tagColor: 'rgba(146,64,14,0.6)',
+    replayColor: 'rgba(146,64,14,0.3)',
+    navTheme: 'light' as const,
+    logoVariant: 'black' as const,
+  },
+  dark: {
+    splashBg: '#000',
+    contentBg: 'linear-gradient(180deg, #0c0c1e 0%, #1a1a2e 50%, #0c0c1e 100%)',
+    subtitleColor: 'rgba(245,230,211,0.5)',
+    titleColor: '#f5e6d3',
+    titleShadow: '0 0 40px rgba(255,200,100,0.2)',
+    descColor: 'rgba(245,230,211,0.5)',
+    tagBorder: 'rgba(255,200,100,0.2)',
+    tagBg: 'rgba(255,200,100,0.06)',
+    tagColor: 'rgba(245,230,211,0.6)',
+    replayColor: 'rgba(245,230,211,0.3)',
+    navTheme: 'warm' as const,
+    logoVariant: 'white' as const,
+  },
+}
+
 export default function GenieCinematicPage() {
   const rootRef = useRef<HTMLDivElement>(null)
   const splashRef = useRef<HTMLDivElement>(null)
@@ -23,6 +57,17 @@ export default function GenieCinematicPage() {
   const tlRef = useRef<gsap.core.Timeline | null>(null)
 
   const [showReplay, setShowReplay] = useState(false)
+
+  const [isDark, setIsDark] = useState(getInitialDark)
+  const tk = isDark ? themeTokens.dark : themeTokens.light
+
+  const toggleDark = useCallback(() => {
+    setIsDark(prev => {
+      const next = !prev
+      persistTheme(next)
+      return next
+    })
+  }, [])
 
   const runAnimation = () => {
     if (tlRef.current) tlRef.current.kill()
@@ -122,7 +167,7 @@ export default function GenieCinematicPage() {
 
   return (
     <div ref={rootRef} style={{ position: 'relative', width: '100%', minHeight: '100vh', overflow: 'hidden' }}>
-      {/* Splash */}
+      {/* Splash — curtain/lens flare effects are dark-mode, keep as-is */}
       <div ref={splashRef} style={{
         position: 'fixed', inset: 0, zIndex: 100,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -135,7 +180,6 @@ export default function GenieCinematicPage() {
           zIndex: 10,
           boxShadow: '4px 0 40px rgba(180,100,20,0.3)',
         }}>
-          {/* Curtain texture */}
           <div style={{
             position: 'absolute', inset: 0,
             background: 'repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(255,255,255,0.02) 3px, rgba(255,255,255,0.02) 6px)',
@@ -161,6 +205,9 @@ export default function GenieCinematicPage() {
           background: 'radial-gradient(ellipse at center, #0c0c1e 0%, #020208 100%)',
         }} />
 
+        {/* Theme toggle */}
+        <ThemeToggle isDark={isDark} onToggle={toggleDark} style={{ zIndex: 12 }} />
+
         {/* Logo */}
         <div ref={logoRef} style={{
           position: 'relative', zIndex: 5,
@@ -168,7 +215,7 @@ export default function GenieCinematicPage() {
           transformStyle: 'preserve-3d',
           filter: 'drop-shadow(0 0 60px rgba(255,200,100,0.3)) drop-shadow(0 0 120px rgba(255,160,60,0.15))',
         }}>
-          <GenieLogo variant="white" height={85} gap={6} />
+          <GenieLogo variant={tk.logoVariant} height={85} gap={6} />
 
           {/* Light sweep */}
           <div ref={shineRef} style={{
@@ -217,21 +264,24 @@ export default function GenieCinematicPage() {
       <div ref={contentRef} style={{
         minHeight: '100vh',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        background: 'linear-gradient(180deg, #0c0c1e 0%, #1a1a2e 50%, #0c0c1e 100%)',
+        background: tk.contentBg,
         padding: '60px 24px', gap: 40,
+        transition: 'background 0.4s ease',
       }}>
-        <SplashNav theme="warm" onReplay={runAnimation} />
+        <SplashNav theme={tk.navTheme} onReplay={runAnimation} />
+        <ThemeToggle isDark={isDark} onToggle={toggleDark} style={{ position: 'fixed', top: 56, right: 20 }} />
 
         <div style={{ maxWidth: 720, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
           <div style={{
             fontSize: 'clamp(3rem, 8vw, 5rem)', fontWeight: 800,
             fontFamily: "'Inter', -apple-system, sans-serif",
-            color: '#f5e6d3',
-            textShadow: '0 0 40px rgba(255,200,100,0.2)',
+            color: tk.titleColor,
+            textShadow: tk.titleShadow,
+            transition: 'color 0.3s ease',
           }}>
             Cinematic Splash
           </div>
-          <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: 'rgba(245,230,211,0.5)', lineHeight: 1.7, maxWidth: 540 }}>
+          <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: tk.descColor, lineHeight: 1.7, maxWidth: 540, transition: 'color 0.3s ease' }}>
             电影幕帘风格入场。双侧幕帘从中间拉开，品牌名从景深推入画面，光线从左侧扫过字体，
             配合 Lens Flare 闪光效果，营造电影院开场的仪式感。
           </p>
@@ -239,16 +289,17 @@ export default function GenieCinematicPage() {
             {['Curtain Pull', 'Depth Zoom', 'Light Sweep', 'Lens Flare', 'Vignette'].map(tag => (
               <span key={tag} style={{
                 padding: '6px 14px', borderRadius: 20,
-                border: '1px solid rgba(255,200,100,0.2)',
-                background: 'rgba(255,200,100,0.06)',
-                color: 'rgba(245,230,211,0.6)', fontSize: 12, fontWeight: 500,
+                border: `1px solid ${tk.tagBorder}`,
+                background: tk.tagBg,
+                color: tk.tagColor, fontSize: 12, fontWeight: 500,
+                transition: 'all 0.3s ease',
               }}>{tag}</span>
             ))}
           </div>
         </div>
 
         {showReplay && (
-          <div style={{ marginTop: 20, fontSize: 13, color: 'rgba(245,230,211,0.3)', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ marginTop: 20, fontSize: 13, color: tk.replayColor, display: 'flex', alignItems: 'center', gap: 6 }}>
             <RotateCcw size={13} /> 点击右上角重新播放
           </div>
         )}

@@ -1,13 +1,49 @@
-import { useLayoutEffect, useRef, useState, useMemo } from 'react'
+import { useLayoutEffect, useRef, useState, useMemo, useCallback } from 'react'
 import { gsap } from 'gsap'
 import { RotateCcw } from 'lucide-react'
 import { SplashNav } from './components/SplashNav'
+import { ThemeToggle } from './components/ThemeToggle'
+import { getInitialDark, persistTheme } from './utils/theme-cookie'
 
 /**
  * Genie Glitch Splash — 故障艺术 / 赛博朋克风格
  *
  * 编排：扫描线闪烁 → 文字故障抖动 → RGB 分离 → 稳定显现 → 数据流背景消散
  */
+
+const themeTokens = {
+  light: {
+    splashBg: '#f0faff',
+    contentBg: 'linear-gradient(180deg, #f0faff, #e4f5ff 50%, #f0faff)',
+    mainTextColor: '#1a1a1a',
+    mainTextShadow: '0 0 20px rgba(0,180,220,0.15)',
+    subtitleColor: 'rgba(0,140,180,0.6)',
+    titleColor: '#0891b2',
+    titleShadow: '0 0 30px rgba(8,145,178,0.15)',
+    descColor: 'rgba(0,140,180,0.6)',
+    tagBorder: 'rgba(8,145,178,0.2)',
+    tagBg: 'rgba(8,145,178,0.06)',
+    tagColor: 'rgba(8,145,178,0.7)',
+    replayColor: 'rgba(0,140,180,0.35)',
+    navTheme: 'light' as const,
+  },
+  dark: {
+    splashBg: '#0a0a0a',
+    contentBg: 'linear-gradient(180deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%)',
+    mainTextColor: '#fff',
+    mainTextShadow: '0 0 20px rgba(0,255,255,0.3)',
+    subtitleColor: 'rgba(0,255,255,0.5)',
+    titleColor: '#0ff',
+    titleShadow: '0 0 30px rgba(0,255,255,0.3)',
+    descColor: 'rgba(0,255,255,0.4)',
+    tagBorder: 'rgba(0,255,255,0.2)',
+    tagBg: 'rgba(0,255,255,0.05)',
+    tagColor: 'rgba(0,255,255,0.6)',
+    replayColor: 'rgba(0,255,255,0.3)',
+    navTheme: 'cyan' as const,
+  },
+}
+
 export default function GenieGlitchPage() {
   const rootRef = useRef<HTMLDivElement>(null)
   const splashRef = useRef<HTMLDivElement>(null)
@@ -22,6 +58,17 @@ export default function GenieGlitchPage() {
   const tlRef = useRef<gsap.core.Timeline | null>(null)
 
   const [showReplay, setShowReplay] = useState(false)
+
+  const [isDark, setIsDark] = useState(getInitialDark)
+  const tk = isDark ? themeTokens.dark : themeTokens.light
+
+  const toggleDark = useCallback(() => {
+    setIsDark(prev => {
+      const next = !prev
+      persistTheme(next)
+      return next
+    })
+  }, [])
 
   // Random data stream characters
   const dataChars = useMemo(() => {
@@ -159,7 +206,8 @@ export default function GenieGlitchPage() {
       <div ref={splashRef} style={{
         position: 'fixed', inset: 0, zIndex: 100,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: '#0a0a0a', overflow: 'hidden',
+        background: tk.splashBg, overflow: 'hidden',
+        transition: 'background 0.4s ease',
       }}>
         {/* Data stream background */}
         <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
@@ -191,6 +239,9 @@ export default function GenieGlitchPage() {
           background: '#fff', zIndex: 8, pointerEvents: 'none',
         }} />
 
+        {/* Theme toggle */}
+        <ThemeToggle isDark={isDark} onToggle={toggleDark} style={{ zIndex: 10 }} />
+
         {/* Logo layers */}
         <div style={{ position: 'relative', zIndex: 4 }}>
           {/* Red channel */}
@@ -215,8 +266,9 @@ export default function GenieGlitchPage() {
           <div ref={logoRef} style={{
             ...logoStyle,
             position: 'relative',
-            color: '#fff',
-            textShadow: '0 0 20px rgba(0,255,255,0.3)',
+            color: tk.mainTextColor,
+            textShadow: tk.mainTextShadow,
+            transition: 'color 0.3s ease',
           }}>
             GENIE
           </div>
@@ -239,9 +291,10 @@ export default function GenieGlitchPage() {
         <div ref={subtitleRef} style={{
           position: 'absolute', bottom: '25%', zIndex: 5,
           fontSize: 'clamp(0.7rem, 1.5vw, 0.9rem)',
-          letterSpacing: '0.5em', color: 'rgba(0,255,255,0.5)',
+          letterSpacing: '0.5em', color: tk.subtitleColor,
           textTransform: 'uppercase',
           fontFamily: "'SF Mono', monospace",
+          transition: 'color 0.3s ease',
         }}>
           {'> SYSTEM INITIALIZED_'}
         </div>
@@ -257,21 +310,24 @@ export default function GenieGlitchPage() {
       <div ref={contentRef} style={{
         minHeight: '100vh',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        background: 'linear-gradient(180deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%)',
+        background: tk.contentBg,
         padding: '60px 24px', gap: 40,
+        transition: 'background 0.4s ease',
       }}>
-        <SplashNav theme="cyan" onReplay={runAnimation} />
+        <SplashNav theme={tk.navTheme} onReplay={runAnimation} />
+        <ThemeToggle isDark={isDark} onToggle={toggleDark} style={{ position: 'fixed', top: 56, right: 20 }} />
 
         <div style={{ maxWidth: 720, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
           <div style={{
             fontSize: 'clamp(3rem, 8vw, 5rem)', fontWeight: 900,
             fontFamily: "'SF Mono', monospace",
-            color: '#0ff', textShadow: '0 0 30px rgba(0,255,255,0.3)',
+            color: tk.titleColor, textShadow: tk.titleShadow,
             letterSpacing: '0.05em',
+            transition: 'color 0.3s ease',
           }}>
             Glitch Splash
           </div>
-          <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: 'rgba(0,255,255,0.4)', lineHeight: 1.7, maxWidth: 540 }}>
+          <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: tk.descColor, lineHeight: 1.7, maxWidth: 540, transition: 'color 0.3s ease' }}>
             故障艺术风格入场。扫描线扫过屏幕触发白闪，品牌文字以 RGB 三通道分离的形式剧烈抖动，
             随后稳定归位。CRT 扫描线叠加 + 矩阵风数据流背景，赛博朋克感拉满。
           </p>
@@ -279,15 +335,16 @@ export default function GenieGlitchPage() {
             {['RGB Split', 'Scanline', 'CRT Effect', 'Glitch Shake', 'Data Stream'].map(tag => (
               <span key={tag} style={{
                 padding: '6px 14px', borderRadius: 20,
-                border: '1px solid rgba(0,255,255,0.2)', background: 'rgba(0,255,255,0.05)',
-                color: 'rgba(0,255,255,0.6)', fontSize: 12, fontWeight: 500,
+                border: `1px solid ${tk.tagBorder}`, background: tk.tagBg,
+                color: tk.tagColor, fontSize: 12, fontWeight: 500,
+                transition: 'all 0.3s ease',
               }}>{tag}</span>
             ))}
           </div>
         </div>
 
         {showReplay && (
-          <div style={{ marginTop: 20, fontSize: 13, color: 'rgba(0,255,255,0.3)', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ marginTop: 20, fontSize: 13, color: tk.replayColor, display: 'flex', alignItems: 'center', gap: 6 }}>
             <RotateCcw size={13} /> 点击右上角重新播放
           </div>
         )}

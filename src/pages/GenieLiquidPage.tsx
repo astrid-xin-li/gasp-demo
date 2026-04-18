@@ -1,8 +1,40 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState, useCallback } from 'react'
 import { gsap } from 'gsap'
 import { RotateCcw } from 'lucide-react'
 import { SplashNav } from './components/SplashNav'
 import { GenieLogo } from './components/GenieLogo'
+import { ThemeToggle } from './components/ThemeToggle'
+import { getInitialDark, persistTheme } from './utils/theme-cookie'
+
+const darkTokens = {
+  splashBg: '#08080c',
+  contentBg: 'linear-gradient(180deg, #08080c 0%, #12121e 50%, #08080c 100%)',
+  subtitleColor: 'rgba(255,255,255,0.4)',
+  descColor: 'rgba(255,255,255,0.35)',
+  tagBorder: '1px solid rgba(255,255,255,0.1)',
+  tagBg: 'rgba(255,255,255,0.03)',
+  tagColor: 'rgba(255,255,255,0.45)',
+  replayColor: 'rgba(255,255,255,0.2)',
+  logoVariant: 'white' as const,
+  navTheme: 'dark' as const,
+  underlineColor: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
+  logoShadow: 'drop-shadow(0 0 60px rgba(255,255,255,0.15))',
+}
+
+const lightTokens: typeof darkTokens = {
+  splashBg: '#f8f8fc',
+  contentBg: 'linear-gradient(180deg, #f8f8fc 0%, #f0f0f8 50%, #f8f8fc 100%)',
+  subtitleColor: 'rgba(0,0,0,0.4)',
+  descColor: 'rgba(0,0,0,0.35)',
+  tagBorder: '1px solid rgba(0,0,0,0.1)',
+  tagBg: 'rgba(0,0,0,0.03)',
+  tagColor: 'rgba(0,0,0,0.45)',
+  replayColor: 'rgba(0,0,0,0.2)',
+  logoVariant: 'black' as const,
+  navTheme: 'light' as const,
+  underlineColor: 'linear-gradient(90deg, transparent, rgba(0,0,0,0.3), transparent)',
+  logoShadow: 'drop-shadow(0 0 60px rgba(0,0,0,0.08))',
+}
 
 /**
  * Genie Liquid Splash — 流体渐变 / 液态金属风格
@@ -25,6 +57,10 @@ export default function GenieLiquidPage() {
   const tlRef = useRef<gsap.core.Timeline | null>(null)
 
   const [showReplay, setShowReplay] = useState(false)
+  const [isDark, setIsDark] = useState(getInitialDark)
+  const toggleDark = useCallback(() => {
+    setIsDark(prev => { const next = !prev; persistTheme(next); return next })
+  }, [])
 
   const runAnimation = () => {
     if (tlRef.current) tlRef.current.kill()
@@ -134,14 +170,18 @@ export default function GenieLiquidPage() {
     willChange: 'transform, opacity',
   }
 
+  const t = isDark ? darkTokens : lightTokens
+
   return (
     <div ref={rootRef} style={{ position: 'relative', width: '100%', minHeight: '100vh', overflow: 'hidden' }}>
       {/* Splash */}
       <div ref={splashRef} style={{
         position: 'fixed', inset: 0, zIndex: 100,
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        background: '#08080c', overflow: 'hidden',
+        background: t.splashBg, overflow: 'hidden',
+        transition: 'background 0.4s ease',
       }}>
+        <ThemeToggle isDark={isDark} onToggle={toggleDark} />
         {/* Gradient blobs */}
         <div ref={blob1Ref} style={{
           ...blobBase,
@@ -172,15 +212,15 @@ export default function GenieLiquidPage() {
         <div ref={outlineRef} style={{
           position: 'relative', zIndex: 2, opacity: 0.3,
         }}>
-          <GenieLogo variant="white" height={85} gap={6} />
+          <GenieLogo variant={t.logoVariant} height={85} gap={6} />
         </div>
 
         {/* Logo: solid version */}
         <div ref={logoRef} style={{
           position: 'absolute', zIndex: 3,
-          filter: 'drop-shadow(0 0 60px rgba(255,255,255,0.15))',
+          filter: t.logoShadow,
         }}>
-          <GenieLogo variant="white" height={85} gap={6} />
+          <GenieLogo variant={t.logoVariant} height={85} gap={6} />
         </div>
 
         {/* Underline */}
@@ -188,7 +228,7 @@ export default function GenieLiquidPage() {
           position: 'relative', zIndex: 3,
           width: 'clamp(80px, 20vw, 160px)', height: 2,
           marginTop: 16,
-          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
+          background: t.underlineColor,
           willChange: 'transform',
         }} />
 
@@ -198,7 +238,7 @@ export default function GenieLiquidPage() {
           marginTop: 20,
           fontSize: 'clamp(0.75rem, 1.6vw, 0.95rem)',
           letterSpacing: '0.35em',
-          color: 'rgba(255,255,255,0.4)',
+          color: t.subtitleColor,
           textTransform: 'uppercase',
           fontFamily: "'Inter', -apple-system, sans-serif",
         }}>
@@ -210,10 +250,11 @@ export default function GenieLiquidPage() {
       <div ref={contentRef} style={{
         minHeight: '100vh',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        background: 'linear-gradient(180deg, #08080c 0%, #12121e 50%, #08080c 100%)',
+        background: t.contentBg,
         padding: '60px 24px', gap: 40,
+        transition: 'background 0.4s ease',
       }}>
-        <SplashNav theme="dark" onReplay={runAnimation} />
+        <SplashNav theme={t.navTheme} onReplay={runAnimation} />
 
         <div style={{ maxWidth: 720, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
           <div style={{
@@ -224,7 +265,7 @@ export default function GenieLiquidPage() {
           }}>
             Liquid Splash
           </div>
-          <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: 'rgba(255,255,255,0.35)', lineHeight: 1.7, maxWidth: 540 }}>
+          <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: t.descColor, lineHeight: 1.7, maxWidth: 540 }}>
             流体渐变风格入场。四个高斯模糊的渐变色块从屏幕四角游入中心区域，有机地漂浮交融，
             在它们汇合的同时品牌名从描边变为实体，配合光带扫过和优雅的渐隐退场。
           </p>
@@ -232,15 +273,15 @@ export default function GenieLiquidPage() {
             {['Gradient Blobs', 'Organic Motion', 'Outline→Solid', 'Light Sweep', 'Stripe-like'].map(tag => (
               <span key={tag} style={{
                 padding: '6px 14px', borderRadius: 20,
-                border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)',
-                color: 'rgba(255,255,255,0.45)', fontSize: 12, fontWeight: 500,
+                border: t.tagBorder, background: t.tagBg,
+                color: t.tagColor, fontSize: 12, fontWeight: 500,
               }}>{tag}</span>
             ))}
           </div>
         </div>
 
         {showReplay && (
-          <div style={{ marginTop: 20, fontSize: 13, color: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ marginTop: 20, fontSize: 13, color: t.replayColor, display: 'flex', alignItems: 'center', gap: 6 }}>
             <RotateCcw size={13} /> 点击右上角重新播放
           </div>
         )}

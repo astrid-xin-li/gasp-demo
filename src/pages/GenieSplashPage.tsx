@@ -1,8 +1,64 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState, useCallback } from 'react'
 import { gsap } from 'gsap'
 import { RotateCcw } from 'lucide-react'
 import { SplashNav } from './components/SplashNav'
 import { GenieG, GenieE1, GenieN, GenieI, GenieE2 } from './components/GenieLogo'
+import { ThemeToggle } from './components/ThemeToggle'
+import { getInitialDark, persistTheme } from './utils/theme-cookie'
+
+const darkTokens = {
+  splashBg: 'radial-gradient(ellipse at center, #0a0e27 0%, #020412 70%, #000 100%)',
+  contentBg: 'linear-gradient(180deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%)',
+  gridColor: 'rgba(99,102,241,0.03)',
+  taglineColor: 'rgba(165,180,252,0.7)',
+  titleGrad: 'linear-gradient(135deg, #e0e7ff 0%, #818cf8 50%, #6366f1 100%)',
+  descColor: 'rgba(165,180,252,0.6)',
+  tagBorder: '1px solid rgba(99,102,241,0.25)',
+  tagBg: 'rgba(99,102,241,0.08)',
+  tagColor: 'rgba(165,180,252,0.7)',
+  replayColor: 'rgba(165,180,252,0.4)',
+  cardBorder: 'rgba(99,102,241,0.15)',
+  cardBg: 'rgba(99,102,241,0.04)',
+  cardHoverBorder: 'rgba(99,102,241,0.35)',
+  cardHoverBg: 'rgba(99,102,241,0.08)',
+  phaseColor: '#818cf8',
+  cardTitle: '#e0e7ff',
+  cardDesc: 'rgba(165,180,252,0.5)',
+  logoVariant: 'white' as const,
+  navTheme: 'dark' as const,
+  bottomAmbient: 'radial-gradient(ellipse at center, rgba(99,102,241,0.08) 0%, transparent 70%)',
+  glowColor: 'radial-gradient(circle, rgba(99,102,241,0.4) 0%, rgba(139,92,246,0.15) 50%, transparent 70%)',
+  ringColor: '1.5px solid rgba(139,92,246,0.5)',
+  ring2Color: '1px solid rgba(99,102,241,0.4)',
+  letterShadow: 'drop-shadow(0 0 30px rgba(99,102,241,0.3))',
+}
+
+const lightTokens: typeof darkTokens = {
+  splashBg: 'radial-gradient(ellipse at center, #f0f2ff 0%, #e8ecff 70%, #f8f9ff 100%)',
+  contentBg: 'linear-gradient(180deg, #f0f2ff 0%, #e8ecff 50%, #f0f2ff 100%)',
+  gridColor: 'rgba(99,102,241,0.06)',
+  taglineColor: 'rgba(99,102,241,0.5)',
+  titleGrad: 'linear-gradient(135deg, #4338ca 0%, #6366f1 50%, #818cf8 100%)',
+  descColor: 'rgba(99,102,241,0.5)',
+  tagBorder: '1px solid rgba(99,102,241,0.3)',
+  tagBg: 'rgba(99,102,241,0.08)',
+  tagColor: 'rgba(99,102,241,0.6)',
+  replayColor: 'rgba(99,102,241,0.4)',
+  cardBorder: 'rgba(99,102,241,0.15)',
+  cardBg: 'rgba(99,102,241,0.05)',
+  cardHoverBorder: 'rgba(99,102,241,0.35)',
+  cardHoverBg: 'rgba(99,102,241,0.1)',
+  phaseColor: '#6366f1',
+  cardTitle: '#312e81',
+  cardDesc: 'rgba(99,102,241,0.5)',
+  logoVariant: 'black' as const,
+  navTheme: 'light' as const,
+  bottomAmbient: 'radial-gradient(ellipse at center, rgba(99,102,241,0.06) 0%, transparent 70%)',
+  glowColor: 'radial-gradient(circle, rgba(99,102,241,0.2) 0%, rgba(139,92,246,0.08) 50%, transparent 70%)',
+  ringColor: '1.5px solid rgba(139,92,246,0.3)',
+  ring2Color: '1px solid rgba(99,102,241,0.2)',
+  letterShadow: 'drop-shadow(0 0 30px rgba(99,102,241,0.15))',
+}
 
 /**
  * Genie Brand Splash — 品牌 Logo 入场动画
@@ -28,6 +84,10 @@ export default function GenieSplashPage() {
   const tlRef = useRef<gsap.core.Timeline | null>(null)
 
   const [showReplay, setShowReplay] = useState(false)
+  const [isDark, setIsDark] = useState(getInitialDark)
+  const toggleDark = useCallback(() => {
+    setIsDark(prev => { const next = !prev; persistTheme(next); return next })
+  }, [])
 
   const runAnimation = () => {
     if (tlRef.current) {
@@ -189,6 +249,8 @@ export default function GenieSplashPage() {
     return { x, y, size, hue, delay: Math.random() * 0.3 }
   })
 
+  const t = isDark ? darkTokens : lightTokens
+
   return (
     <div ref={rootRef} style={{ position: 'relative', width: '100%', minHeight: '100vh', overflow: 'hidden' }}>
       {/* ── Splash Layer ── */}
@@ -202,8 +264,9 @@ export default function GenieSplashPage() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'radial-gradient(ellipse at center, #0a0e27 0%, #020412 70%, #000 100%)',
+          background: t.splashBg,
           overflow: 'hidden',
+          transition: 'background 0.4s ease',
         }}
       >
         {/* Background subtle grid */}
@@ -211,12 +274,14 @@ export default function GenieSplashPage() {
           position: 'absolute',
           inset: 0,
           backgroundImage: `
-            linear-gradient(rgba(99,102,241,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px)
+            linear-gradient(${t.gridColor} 1px, transparent 1px),
+            linear-gradient(90deg, ${t.gridColor} 1px, transparent 1px)
           `,
           backgroundSize: '60px 60px',
           opacity: 0.5,
         }} />
+
+        <ThemeToggle isDark={isDark} onToggle={toggleDark} />
 
         {/* Particles container */}
         <div ref={particlesRef} style={{
@@ -250,7 +315,7 @@ export default function GenieSplashPage() {
           width: 320,
           height: 320,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(99,102,241,0.4) 0%, rgba(139,92,246,0.15) 50%, transparent 70%)',
+          background: t.glowColor,
           filter: 'blur(40px)',
           willChange: 'transform, opacity',
         }} />
@@ -261,7 +326,7 @@ export default function GenieSplashPage() {
           width: 200,
           height: 200,
           borderRadius: '50%',
-          border: '1.5px solid rgba(139,92,246,0.5)',
+          border: t.ringColor,
           willChange: 'transform, opacity',
         }} />
 
@@ -271,7 +336,7 @@ export default function GenieSplashPage() {
           width: 160,
           height: 160,
           borderRadius: '50%',
-          border: '1px solid rgba(99,102,241,0.4)',
+          border: t.ring2Color,
           willChange: 'transform, opacity',
         }} />
 
@@ -284,20 +349,20 @@ export default function GenieSplashPage() {
           gap: 2,
           perspective: '800px',
         }}>
-          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: 'drop-shadow(0 0 30px rgba(99,102,241,0.3))' }}>
-            <GenieG variant="white" height={90} />
+          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: t.letterShadow }}>
+            <GenieG variant={t.logoVariant} height={90} />
           </div>
-          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: 'drop-shadow(0 0 30px rgba(99,102,241,0.3))' }}>
-            <GenieE1 variant="white" height={90} />
+          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: t.letterShadow }}>
+            <GenieE1 variant={t.logoVariant} height={90} />
           </div>
-          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: 'drop-shadow(0 0 30px rgba(99,102,241,0.3))' }}>
-            <GenieN variant="white" height={90} />
+          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: t.letterShadow }}>
+            <GenieN variant={t.logoVariant} height={90} />
           </div>
-          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: 'drop-shadow(0 0 30px rgba(99,102,241,0.3))' }}>
-            <GenieI variant="white" height={90} />
+          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: t.letterShadow }}>
+            <GenieI variant={t.logoVariant} height={90} />
           </div>
-          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: 'drop-shadow(0 0 30px rgba(99,102,241,0.3))' }}>
-            <GenieE2 variant="white" height={90} />
+          <div className="splash-letter" style={{ display: 'inline-block', willChange: 'transform, opacity', filter: t.letterShadow }}>
+            <GenieE2 variant={t.logoVariant} height={90} />
           </div>
         </div>
 
@@ -309,7 +374,7 @@ export default function GenieSplashPage() {
           fontSize: 'clamp(0.85rem, 2vw, 1.1rem)',
           fontWeight: 400,
           letterSpacing: '0.35em',
-          color: 'rgba(165,180,252,0.7)',
+          color: t.taglineColor,
           fontFamily: "'Inter', -apple-system, sans-serif",
           textTransform: 'uppercase',
         }}>
@@ -324,7 +389,7 @@ export default function GenieSplashPage() {
           transform: 'translateX(-50%)',
           width: '80%',
           height: 160,
-          background: 'radial-gradient(ellipse at center, rgba(99,102,241,0.08) 0%, transparent 70%)',
+          background: t.bottomAmbient,
           filter: 'blur(40px)',
         }} />
       </div>
@@ -336,11 +401,12 @@ export default function GenieSplashPage() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(180deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%)',
+        background: t.contentBg,
         padding: '60px 24px',
         gap: 40,
+        transition: 'background 0.4s ease',
       }}>
-        <SplashNav theme="dark" onReplay={runAnimation} />
+        <SplashNav theme={t.navTheme} onReplay={runAnimation} />
 
         {/* Hero content after splash */}
         <div style={{
@@ -355,7 +421,7 @@ export default function GenieSplashPage() {
             fontSize: 'clamp(3rem, 8vw, 5rem)',
             fontWeight: 800,
             fontFamily: "'Inter', -apple-system, sans-serif",
-            background: 'linear-gradient(135deg, #e0e7ff 0%, #818cf8 50%, #6366f1 100%)',
+            background: t.titleGrad,
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             lineHeight: 1.1,
@@ -365,7 +431,7 @@ export default function GenieSplashPage() {
 
           <p style={{
             fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
-            color: 'rgba(165,180,252,0.6)',
+            color: t.descColor,
             lineHeight: 1.7,
             maxWidth: 540,
           }}>
@@ -386,9 +452,9 @@ export default function GenieSplashPage() {
                 style={{
                   padding: '6px 14px',
                   borderRadius: 20,
-                  border: '1px solid rgba(99,102,241,0.25)',
-                  background: 'rgba(99,102,241,0.08)',
-                  color: 'rgba(165,180,252,0.7)',
+                  border: t.tagBorder,
+                  background: t.tagBg,
+                  color: t.tagColor,
                   fontSize: 12,
                   fontWeight: 500,
                   letterSpacing: '0.04em',
@@ -422,24 +488,24 @@ export default function GenieSplashPage() {
               style={{
                 padding: '20px 18px',
                 borderRadius: 12,
-                border: '1px solid rgba(99,102,241,0.15)',
-                background: 'rgba(99,102,241,0.04)',
+                border: `1px solid ${t.cardBorder}`,
+                background: t.cardBg,
                 backdropFilter: 'blur(8px)',
                 transition: 'all 0.2s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(99,102,241,0.35)'
-                e.currentTarget.style.background = 'rgba(99,102,241,0.08)'
+                e.currentTarget.style.borderColor = t.cardHoverBorder
+                e.currentTarget.style.background = t.cardHoverBg
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(99,102,241,0.15)'
-                e.currentTarget.style.background = 'rgba(99,102,241,0.04)'
+                e.currentTarget.style.borderColor = t.cardBorder
+                e.currentTarget.style.background = t.cardBg
               }}
             >
               <div style={{
                 fontSize: 11,
                 fontWeight: 600,
-                color: '#818cf8',
+                color: t.phaseColor,
                 letterSpacing: '0.1em',
                 marginBottom: 8,
               }}>
@@ -448,14 +514,14 @@ export default function GenieSplashPage() {
               <div style={{
                 fontSize: 15,
                 fontWeight: 600,
-                color: '#e0e7ff',
+                color: t.cardTitle,
                 marginBottom: 6,
               }}>
                 {item.title}
               </div>
               <div style={{
                 fontSize: 13,
-                color: 'rgba(165,180,252,0.5)',
+                color: t.cardDesc,
                 lineHeight: 1.5,
               }}>
                 {item.desc}
@@ -469,7 +535,7 @@ export default function GenieSplashPage() {
           <div style={{
             marginTop: 20,
             fontSize: 13,
-            color: 'rgba(165,180,252,0.4)',
+            color: t.replayColor,
             display: 'flex',
             alignItems: 'center',
             gap: 6,
